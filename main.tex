@@ -1,0 +1,306 @@
+\documentclass[10pt]{beamer}
+\usetheme{Copenhagen}
+
+\usepackage{comment}
+
+\usepackage[backend=biber, style=alphabetic, sorting=none, bibstyle=alphabetic, maxnames=10, minnames=6,backref=true, autocite=inline, labelalpha=true, doi=false, url=false]{biblatex}
+\addbibresource{the.bib}
+
+\title[Parametrizando un Sistema Informático para Obra Social Universitaria]
+{Parametrizando un Sistema Informático para Obra Social Universitaria con un Motor de Reglas}
+\author{Iván Brocas}
+
+\begin{document}
+
+\maketitle
+\begin{comment}
+(Presentación mía y del trabajo)
+\end{comment}
+
+\section{Introducción}
+
+\begin{frame}{Introducción}{Marco de trabajo}
+    Un sistema informático para obras sociales universitarias, caracterizado por:
+    \begin{itemize}
+        \item Ágilidad
+        \item Centricidad en el afiliado
+    \end{itemize}
+\end{frame}
+\begin{comment}
+Este projecto se encuentra enmarcado en el desarrollo de un sistema informático para obras sociales universitarias, caracterizado por:
+- Ágilidad
+- Centricidad en el afiliado
+El foco se encuentra en la segunda, procurando facilitar la adaptación del sistema en respuesta a cambios a un costo accesible y en tiempos mínimos a partir de la introducción de un motor de reglas que permita separar el código fuente de reglas del negocio tendientes a cambiar.
+\end{comment}
+
+\subsection{Motivación}
+
+\begin{frame}{Motivación}
+    \begin{itemize}
+        \item El contexto de las obras sociales universitarias está en constante cambio
+        \item Un sistema que falla en adaptarse pierde su utilidad:
+        \begin{itemize}
+            \item Aumento en el trabajo del personal
+            \item Disminución en la calidad de los servicios
+            \item Menos información para la toma de decisiones
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+\begin{comment}
+La motivación de este trabajo parte, principalmente, de dos observaciones
+- El contexto de las obras sociales universitarias está en constante cambio
+- Un sistema que falla en adaptarse pierde su utilidad, en la medida en que las funcionalidades brindadas por el mismo no son adaptadas para acomodar los cambios en el contexto. Esta perdida de utilidad suele manifestarse en forma de
+    - Aumento en el trabajo del personal: el cual tiene que responder para tener en cuenta los cambios que el sistema no tuvo. Este trabajo manual además reemplaza parte del trabajo que estaba previamente automatizado.
+    - Disminución en la calidad de servicio: El aumento en la porción del trabajo manual se traduce en un aumento de los tiempos necesarios para llevar a cabo trámites y tareas dentro de la obra social, lo que resulta en la pérdida de la calidad percibida por los afiliados.
+    - Menos información para la toma de decisiones: La disminución en la porción del trabajo automatizado conlleva una disminución correspondiente en la capacidad del sistema para recolectar información, con la cual respaldar la toma de decisiones.
+\end{comment}
+
+\begin{frame}{Posibles soluciones}
+    \begin{itemize}
+        \item Incorporar/escalar su propia área de informática de manera que esté a la altura del desarrollo y mantenimiento de software necesarios
+        \item Contratar a una empresa para que esté a cargo de este desarrollo y mantenimiento
+        \item Comprarle a una empresa el producto ya desarrollado y pagar por su adaptación y mantenimiento
+    \end{itemize}
+\end{frame}
+\begin{comment}
+Las soluciones a las que pueden recurrir las obras sociales universitarias para reducir la indicidencia de estos problemas pueden clasificarse de forma general en
+- incorporar/escalar su propia área de informática de manera que esté a la altura del desarrollo y mantenimiento de software necesarios
+- contratar a una empresa para que esté a cargo de este desarrollo y mantenimiento
+- comprarle a una empresa el producto ya desarrollado y pagar por su adaptación y mantenimiento
+
+Las primeras dos opciones requieren que la obra social sea propietaria del sistema en cuestión.
+
+Por otra parte, la última opción, en principio parece ser más onerosa y rápida de concretar. Sin embargo, un mayor poder de desición por parte de los afiliados, junto con un menor tamaño de la obra social, el cual suele implicar mayor complejidad en los convenios con proveedores, resultan en una mayor complejidad en comparación con su contraparte privada. Esta complejidad adicional necesariamente incrementa los costos de adaptación y mantenimiento, reduciendo la atractividad de está opción en un contexto de recursos limitados.
+\end{comment}
+
+\subsection{Objetivos}
+
+\begin{frame}{Objetivos}
+    \begin{block}{Objetivo General}
+        Facilitar la adaptación del sistema frente a cambios en la reglamentación del cálculo de cuotas.
+    \end{block}
+    \begin{block}{Objetivos Específicos}
+        \begin{enumerate}
+            \item Extraer las reglas de negocio actualmente en uso
+            \item Expresar dichas reglas en un lenguaje que resulte entendible para el personal de la obra social.
+            \item Permitir la gestión de las especificaciones obtenidas de forma independiente al sistema.
+            \item Reducir el esfuerzo requerido para materializar cambios en las reglas del negocio
+            \begin{enumerate}
+                \item modificar el código fuente del sistema, ni
+                \item realizar el despliegue de una nueva versión.
+            \end{enumerate}
+            \item Reformular el código fuente para que sea más legible.
+        \end{enumerate}
+    \end{block}
+\end{frame}
+\begin{comment}
+El principal objetivo es facilitar la adaptación del sistema frente a cambios en su contexto. En particular, se focaliza en el cálculo de cuotas de los afiliados. Se eligió esta parte de las reglas de negocio en concreto por su complejidad y propensidad a cambios.
+Una forma de lograr esto es mediante la separación de las reglas de negocio del código fuente. Para esto, se suele hacer uso de un motor de reglas, que permite la ejecución de reglas externas al código de la aplicación. Este motor suele formar parte de un sistema de gestión de reglas de negocio, que además del motor incluye herramientas para la gestión de las reglas.
+
+De este objetivo se extraen los objetivos específicos
+
+- Extraer las reglas de negocio actualmente en uso, partiendo de la documentación correspondiente y la materialización de las reglas de negocio presente en el código fuente. Las reglamentaciones utilizadas son las que se encontraban en vigor durante la última actualización del código fuente (documento de 2023).
+- Expresar dichas reglas en un lenguaje que resulte entendible para el personal de la obra social.
+- Permitir la gestión de las especificaciones obtenidas de forma independiente al sistema.
+- Reducir el esfuerzo requerido para materializar cambios en las reglas del negocio
+    - modificar el código fuente del sistema, ni
+    - realizar el despliegue de una nueva versión.
+
+Se espera que el logro de estos objetivos reduzca o elimine la incidencia de los problemas antes mencionados
+
+Por otro lado, partiendo de la revisión de la implementación actual de las reglas de negocio en el código fuente, se agrega un objetivo adicional:
+- Reformular el código fuente para que sea más legible.
+
+Esto para mejorar la compresión de la implementación actual y brindar un mejor punto de partida para la posterior comparación con el motor de reglas.
+\end{comment}
+
+\section{Revisión literaria}
+
+\subsection{Afiliaciones y cálculo de cuotas}
+
+\begin{frame}{Afiliaciones y cálculo de cuotas}
+    En DOSPU se dividen a los afiliados en las categorías:
+    \begin{itemize}
+        \item Titular
+        \item Familiar
+        \item Voluntario adherente
+    \end{itemize}
+    % TODO: agregar referencias
+\end{frame}
+\begin{comment}
+De las ordenanzas que dictan las normativas de DOSPU, podemos ver que los afiliados estan divididos en tres subcategorías:
+- Titular
+- Familiar, de un afiliado titular
+- Voluntario Adherente
+\end{comment}
+
+\begin{frame}{Titular}
+    \begin{block}{Obligatorio activo}
+        Actualmente no calculado de forma directa por el sistema
+    \end{block}
+    \begin{block}{Voluntario jubilado}
+        Monto de la cuota:
+        \begin{displaymath}
+        0.02 * j_m + 0.05 * j_h
+        \end{displaymath}
+
+        , donde:
+        \begin{itemize}
+            \item $j_m = \text{jubilación mínima}$
+            \item $j_h = \text{haber jubilatorio}$
+        \end{itemize}
+    \end{block}
+\end{frame}
+\begin{comment}
+Los titulares, a su vez, se dividen en:
+- Obligatorio activo: agentes que se encuentren en actividad, como docentes, por ejemplos.
+    Actualmente, no calculado de forma directa por el sistema, con lo cual queda fuera del alcance de este trabajo.
+- Jubilados voluntarios: previamente obligatorios activos que optan por continuar estando afiliados.
+Su cuota está calculada por la fórmula (fórmula en la diapositiva.)
+
+Dos consideraciones adicionales que se extrajeron del código fuente del sistema, es que en caso de que dos afiliados voluntarios jubilados tengan registrado un vínculo de cónyuge, se aplica un descuento de 30% a la cuota del afiliado con menor haber jubilatorio. Para esto, ambos afiliados deben tener registrado un haber jubilatorio.
+
+En caso de no tener un haber jubilatorio, en lugar de utilizarse la fórmula mostrada, se utiliza valor de referencia
+\end{comment}
+
+\begin{frame}{Familiar}
+    \begin{block}{Familiar de obligatorio activo}
+        Es no aportante
+    \end{block}
+    \begin{block}{Cónyuge o conviviente de voluntario jubilado}
+        Monto de cuota:  70 \% de la del afiliado titular.
+    \end{block}
+\end{frame}
+\begin{comment}
+Como se mencionó antes, los afiliados de esta categoría son familiares de afiliados titulares, distinguiéndose entre
+- Familiar de obligatorio activo: son no aportantes, es decir que su cuota es 0.
+- Cónyuge o conviviente de voluntario jubilado: su cuota es (fórmula en la slide).
+\end{comment}
+
+\begin{frame}{Voluntario adherente}
+    Subcategorías:
+    \begin{itemize}
+        \item pensionado
+        \item becarios y personal ad honorem de la UNSL
+        \item agente UNSL con licencia
+        \item ascendientes en primer grado del afiliado titular
+        \item hijos (que hayan dejado de reunir las condiciones de no aportantes)
+        \item familiares adherentes
+        \item universitarios adherentes
+        \item ex-afiliados a DOSPU
+        \item agentes vinculados a DOSPU
+        \item adherente de edad avanzada
+    \end{itemize}
+\end{frame}
+\begin{comment}
+Como su nombre lo indica son aquellos que optan voluntariamente por ser afiliados de la obra social, pagando aportes dependientes de la subcategoría a la que pertenezcan.
+Dentro de esta se esta categoría, se encuentran las siguientes subcategorías:
+- pensionado
+- becarios y personal ad honorem de la UNSL
+- agente UNSL con licencia
+- ascendientes en primer grado del afiliado titular
+- hijos que hayan dejado de reunir las condiciones de no aportantes
+- familiares adherentes
+- universitarios adherentes
+- ex-afiliados a DOSPU
+- agentes vinculados a DOSPU
+- adherente de edad avanzada
+\end{comment}
+
+\begin{frame}{Voluntario adherente}
+    \begin{block}{Caso general}
+        Porcentaje sobre la Cuota Mensual Máxima Única (CMMU), dependiente de la edad.
+
+        CMMU: 6 \% del sueldo total bruto de un Profesor Universitario Titular Exclusivo con Máxima Antigüedad
+    \end{block}
+    \begin{block}{Pensionado}
+        Monto de la cuota:
+        \begin{displaymath}
+        0.02 * j_m + 0.05 * p
+        \end{displaymath}
+
+        , donde:
+        \begin{itemize}
+            \item $j_m = \text{jubilación mínima}$
+            \item $p = \text{pensión}$
+        \end{itemize}
+    \end{block}
+\end{frame}
+\begin{comment}
+En general, el monto a pagar por los afilaidos voluntarios adherente se calcula como un porcentaje sobre la Cuota Mensual Máxima Única (CMMU) (definición en la slide). Este porcentaje es dependiente de la edad del afiliado.
+
+Para algunas de las subcategorías se utiliza otra fórmula, o se tienen consideraciones adicionales. Estas excepciones se presentan a continuación.
+
+El cálculo para un pensionado sigue casi las mismas consideraciones que el cálculo de un voluntario jubilado, con la excepción del descuento aplicado para los afiliados de la misma categoría con vínculo por cónyuge.
+\end{comment}
+
+\begin{frame}{Voluntario adherente}
+    \begin{block}{Agente UNSL con licencia}
+        Monto de la cuota: máximo entre el 9\% del sueldo bruto en actividad y el porcentaje correspondiente de la CMMU.
+    \end{block}
+    \begin{block}{Ascendiente en primer grado (de una afiliado titular)}
+        Dependiendo de la antigüedad en DOSPU se utiliza CMMU o CMMU20
+
+        CMMU20: 6\% del sueldo de un Profesor Universitario Titular Exclusivo con una antigüedad correspondiente veinte años
+    \end{block}
+    \begin{block}{Adherentes de edad avanzada (mayores de 65)}
+        Dependen de si cuentan con 25 años de aporte en DECOM.
+
+        Monto de la cuota:
+        \begin{itemize}
+            \item Con aportes: 150\% de la CMMU.
+            \item Sin aportes: 200\% de la CMMU.
+        \end{itemize}
+    \end{block}
+\end{frame}
+\begin{comment}
+En el caso de un agente UNSL con licencia, el valor de cuota es el máximo entre el porcentaje correpondiente y el 9% del sueldo bruto del afiliado en actividad.
+
+En el código revisado se estaba utilizando únicamente el porcentaje de la CMMU para el cálculo de la cuota de los afiliados de esta subcatergoría
+
+Para los ascendientes en primer grado de un afiliado titular, dependiente de la antigüedad del ascendiente en DOSPU, se utiliza el valor de referencia CMMU o CMMU20, siendo este último para afiliados con más de 10 años de antigüedad.
+
+Similarmente, en el caso de los adherentes de edad avanzada, el monto de la cuota depende de si el afiliado cuenta o no con 25 años de aporte a DECOM o no, siendo el monto de la cuota 150 o 200% de la CMMU, respectivamente.
+\end{comment}
+
+\begin{frame}{Consideraciones adicionales}
+    \begin{block}{Otros aportes}
+        \begin{itemize}
+            \item Fondo Especial Solidario para Alta Complejidad (FESAC)
+            \item Sistema Universitario Médico Asistencial Solidario (SUMAS)
+        \end{itemize}
+    \end{block}
+    \begin{block}{Modificadores de afilación por enfermedad}
+        Dependen del carácter de la misma
+        \begin{table}
+            \centering
+        \begin{tabular}{|c|c|}
+            \hline
+            Carácter de la enfermedad & Modificador \\ \hline
+            Temporario & 2 \\ \hline
+            Crónico & 3 \\ \hline
+            De mayor complejidad & 2 \\ \hline
+        \end{tabular}
+        \end{table}
+    \end{block}
+\end{frame}
+\begin{comment}
+Además del monto resultante de la aplicación de las fórmulas presentadas, dependiente de la categoría y subcategoría del afiliado, existen algunos aportes adicionales. Algunos de estos aportes son obligatorios, y otros opcionales.
+Estos incluyen (aportes en la slide)
+
+Por otra parte, para los voluntarios jubilados, en el caso de que estos ingresen a DOSPU con condiciones preexistentes, se aplica un modificador según la naturaleza de la condición (cuadro de la slide).
+\end{comment}
+
+% TODO: analisis de motores
+
+% TODO: refactorizacion
+
+% TODO: integracion con openl
+
+% TODO: ejemplo regla
+
+% TODO: ejemplo cambio
+
+% TODO: conclusiones
+
+\end{document}
