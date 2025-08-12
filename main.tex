@@ -423,7 +423,11 @@ La última versión de Jess fue publicada en marzo de 2006.
         \item [Gestión de las reglas:]
             editor DMN
         \item [Integración:] uso directo de objetos Java (POJO)
-        \item [Mantenimiento:] última modificación hace más de 4 años
+        \item [Mantenimiento:]
+            \begin{itemize}
+                \item última versión estable 2024
+                \item prblemas con editor DMN
+            \end{itemize}
     \end{description}
 \end{frame}
 \begin{comment}
@@ -438,22 +442,25 @@ Para la gestión de las reglas, Drools cuenta con DMN editor, herramienta con la
 Las reglas pueden hacer uso de objetos POJO, es decir objetos únicamente con getters y setters.
 
 Drools continúa en desarrollo, siendo la publicación de la última versión estable el año pasado y la última modificación del repositorio la semana pasada.
-\end{comment}
+
+Este fue la única de las opciones con la cual se encontraron problemas durante la implementación del ejemplo. Estos problemas fueron en torno al uso del editor DMN, donde algunas de las funcionalidades no se comportaban de forma correcta. Los casos más notables era para la importanción de definciones de tipos desde clases java y la definición de tipos dentro de las tablas de decisión. \end{comment}
 
 \begin{frame}{OpenL Tablets}
     \begin{description}
-        \item [Expresividad:]
-            \begin{itemize}
-                \item funciones lambda
-                \item anotaciones en clases y métodos
-            \end{itemize}
-        \item [Gestión de las reglas:] acoplada a la gestión del código
+        \item [Expresividad:] tablas basadas en Excel, con BEXL
+        \item [Gestión de las reglas:] OpenL Studio
         \item [Integración:] uso directo de objetos Java
-        \item [Mantenimiento:] última modificación hace más de 4 años
+        \item [Mantenimiento:] última versión estable 2025
     \end{description}
 \end{frame}
 \begin{comment}
+Con OpenL Tablets, la especificación de las reglas se hace haciendo uso de tablas basadas en excel. Las expresiones en estas tablas utilizan BEXL, que es una extensión de Java.
 
+La gestión de las reglas puede ser realizada con OpenL Studio, que es una aplicación web que permite realizar la gestión, versionado y control de acceso a las reglas. Las mismas se almacenan en docuemnto Excel, y sus cambios pueden hacerse efectivos sin necesidad de volver a compilar o desplegar el sistema.
+
+Las reglas pueden hacer uso directo de objetos, clases y paquetes de Java.
+
+OpenL Tablets continúa activamente en desarrollo, su última versión lanzada en 2025 y al igual que Drools la última actualización de la rama principal del repositorio tiene menos de una semana.
 \end{comment}
 
 % TODO: refactorizacion
