@@ -1,5 +1,6 @@
 \documentclass[10pt]{beamer}
 \usetheme{Copenhagen}
+\usecolortheme{orchid}
 
 \usepackage{comment}
 
@@ -12,13 +13,29 @@
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
 
+\usepackage[none]{hyphenat}
+
 \title[Parametrizando un Sistema Informático para Obra Social Universitaria]
 {Parametrizando un Sistema Informático para Obra Social Universitaria con un Motor de Reglas}
 \author{Iván Brocas}
 
 \begin{document}
 
-\maketitle
+\begin{frame}
+    \centering
+    \begin{tikzpicture}[
+            auto,
+            inner sep=2mm,
+            box/.style={rectangle, align=center, rounded corners=5pt, text width=\textwidth},
+        ]
+        \node[box] (unsl) {\Large Universidad Nacional de San Luis};
+        \node[box, below=0mm of unsl] (dep) {\large Departamento de informática};
+        \node[box, below=1mm of dep, fill=structure.fg, text=white] (title) {\setlength{\baselineskip}{1.5em}\LARGE Parametrizando un Sistema Informático para Obra Social Universitaria};
+        \node[box, below=1mm of title] (author) {Estudiante: Iván Brocas};
+        \node[box, below=-1mm of author] (dir) {Director: Mg. Alejandro Sánchez};
+        \node[box, below=-1mm of dir] (co-dir) {Co-Director: Dr. Carlos Humberto Salgado};
+        \end{tikzpicture}
+\end{frame}
 \begin{comment}
 (Presentación mía y del trabajo)
 \end{comment}
@@ -82,30 +99,30 @@ Por otra parte, la última opción, en principio parece ser más onerosa y rápi
 
 \subsection{Objetivos}
 
-\begin{frame}{Objetivos}
-    \begin{block}{Objetivo General}
+\begin{frame}{Objetivo General}
         Facilitar la adaptación del sistema frente a cambios en la reglamentación del cálculo de cuotas.
-    \end{block}
-    \begin{block}{Objetivos Específicos}
-        \begin{enumerate}
-            \item Extraer las reglas de negocio actualmente en uso
-            \item Expresar dichas reglas en un lenguaje que resulte entendible para el personal de la obra social.
-            \item Permitir la gestión de las especificaciones obtenidas de forma independiente al sistema.
-            \item Reducir el esfuerzo requerido para materializar cambios en las reglas del negocio
-            \begin{enumerate}
-                \item modificar el código fuente del sistema, ni
-                \item realizar el despliegue de una nueva versión.
-            \end{enumerate}
-            \item Reformular el código fuente para que sea más legible.
-        \end{enumerate}
-    \end{block}
+        
 \end{frame}
-% TODO: agregar métrica
 \begin{comment}
 El principal objetivo es facilitar la adaptación del sistema frente a cambios en su contexto. En particular, se focaliza en el cálculo de cuotas de los afiliados. Se eligió esta parte de las reglas de negocio en concreto por su complejidad y propensidad a cambios.
 Una forma de lograr esto es mediante la separación de las reglas de negocio del código fuente. Para esto, se suele hacer uso de un motor de reglas, que permite la ejecución de reglas externas al código de la aplicación. Este motor suele formar parte de un sistema de gestión de reglas de negocio, que además del motor incluye herramientas para la gestión de las reglas.
+\end{comment}
 
-De este objetivo se extraen los objetivos específicos
+\begin{frame}{Objetivos específicos}
+    \begin{enumerate}
+        \item Extraer las reglas de negocio actualmente en uso
+        \item Expresar dichas reglas en un lenguaje que resulte entendible para el personal de la obra social.
+        \item Permitir la gestión de las especificaciones obtenidas de forma independiente al sistema.
+        \item Reducir el esfuerzo requerido para materializar cambios en las reglas del negocio
+        \begin{enumerate}
+            \item modificar el código fuente del sistema, ni
+            \item realizar el despliegue de una nueva versión.
+        \end{enumerate}
+        \item Reformular el código fuente para que sea más legible.
+    \end{enumerate}
+\end{frame}
+\begin{comment}
+Del objetivo general, se extraen los objetivos específicos
 
 - Extraer las reglas de negocio actualmente en uso, partiendo de la documentación correspondiente y la materialización de las reglas de negocio presente en el código fuente. Las reglamentaciones utilizadas son las que se encontraban en vigor durante la última actualización del código fuente (documento de 2023).
 - Expresar dichas reglas en un lenguaje que resulte entendible para el personal de la obra social.
@@ -697,7 +714,7 @@ En particular, se considera el siguiente cambio.
 En el sistema este cambio implica el cambio o adición de más de 30 líneas de código, además de que requiere volver a compilar el sistema y desplegar la nueva versión para hacer los cambios efectivos.
 \end{comment}
 
-\begin{frame}{Ejemplo de un cambio}
+\begin{frame}{Ejemplo de un cambio}{Utilizando OpenL Tablets}
     \begin{block}{Tabla original}
         \begin{figure}
             \centering
@@ -709,7 +726,7 @@ En el sistema este cambio implica el cambio o adición de más de 30 líneas de 
 En la slide se puede ver la tabla original que se debe cambiar, la cual especifica la regla correspondiente con el caso general para los voluntarios adherente mencionado anteriormente.
 \end{comment}
 
-\begin{frame}{Ejemplo de un cambio}
+\begin{frame}{Ejemplo de un cambio}{Utilizando OpenL Tablets}
     \begin{block}{Cambios aplicados}
         \begin{figure}
             \centering
@@ -803,6 +820,23 @@ A pesar de que las reglas fueron separadas del código fuente del sistema, qued�
 En base a las limitaciones, posibles continuaciones de este trabajo podrían ser la inclusión de OpenL Studio para facilitar la gestión de las reglas, así como la comprobación de la facilidad del personal de la obra social para comprender las reglas. Por ejemplo mediante un experimento o una estimación más involucrada de dicho esfuerzo.
 
 Adicionalemnte, la continuación más natural, es la parametrización de otros aspectos del sistema, como por ejemplo el cálculo de las coberturas de las prácticas
+\end{comment}
+
+\section{Agradecimientos}
+
+\begin{frame}{Agrademientos}
+    \begin{itemize}
+        \item A los profesores Mg. Alejandro Sánchez y Dr. Carlos Humberto Salgado
+        \item Al jurado
+        \item A los presentes
+    \end{itemize}
+\end{frame}
+\begin{comment}
+Le agradezco a los profesores por su acompañamiento durante el desarrollo de este trabajo
+
+Un agradecimiento especial al jurado, por su compromiso frente al aviso con poca antelación
+
+Y a los presentes por su tiempo y atención
 \end{comment}
 
 \end{document}
