@@ -25,6 +25,7 @@
         \item Ágilidad
         \item Centricidad en el afiliado
     \end{itemize}
+    % TODO: Tecnologías
 \end{frame}
 \begin{comment}
 Este projecto se encuentra enmarcado en el desarrollo de un sistema informático para obras sociales universitarias, caracterizado por:
@@ -115,6 +116,23 @@ Esto para mejorar la compresión de la implementación actual y brindar un mejor
 \end{comment}
 
 \section{Revisión literaria}
+
+\subsection{Trabajos Relacionados}
+\begin{frame}{Revisión literaria}{Trabajos Relacionados}
+    \begin{itemize}
+        \item Calculation of Insurance Policy Prices Using Rules-based Systems\footfullcite{medic2019calculation}
+        \item Un sistema operacional mejorado con el uso de un motor de reglas de negocio. El caso SENASA\footfullcite{sampol2019sistema}
+    \end{itemize}
+\end{frame}
+\begin{comment}
+Para cumplir con los objetivos propuestos, se comenzó por realizar una revisión de la literatura disponible afín al tema. Primeramente, se realizó la búsqueda de trabajos similares, los trabajos de mayor similitud fueron:
+
+En el primer trabajo se reporta un uso similar de un BRMS para el cálculo de los precios de las distintas pólizas de una aseguradora, siendo el principal objetivo buscado la mantenibilidad y la adaptabilidad a cambios en las regulaciones.
+
+El segundo trabajo, en el contexto nacional, se describe el uso de un BRMS en aplicaciones desarrolladas para SENASA con el objetivo de lograr que tengan mayor flexibilidad frente a cambios en las reglas de negocio que rigen los proceso que soportan.
+
+También se detectó que en sistemas informáticos para organismos de salud privados, se argumenta flexibilidad en la especificación de reglas de negocio, pero sin mayor detalle que el comercial.
+\end{comment}
 
 \subsection{Afiliaciones y cálculo de cuotas}
 
@@ -291,7 +309,152 @@ Estos incluyen (aportes en la slide)
 Por otra parte, para los voluntarios jubilados, en el caso de que estos ingresen a DOSPU con condiciones preexistentes, se aplica un modificador según la naturaleza de la condición (cuadro de la slide).
 \end{comment}
 
-% TODO: analisis de motores
+\subsection{Motores de reglas}
+
+\begin{frame}{Motores de reglas}
+    \begin{block}{Criterio de evaluación}
+        \begin{itemize}
+            \item Gestión de las reglas
+            \item Integración
+            \item Mantenimiento
+            \begin{itemize}
+                \item Mantenedores activos
+                \item Bugs o incompatibilidades
+            \end{itemize}
+            \item Expresividad
+        \end{itemize}    
+    \end{block}
+\end{frame}
+\begin{comment}
+La idea subyacente de los motores de reglas es la externalización de la lógica de negocios. Este puede ser visto como un intérprete sofisticado de sentencias if-then (si-entonces). Estas sentencias, llamadas reglas están compuestas por: una condición, que evalúa a verdadero o falso, y una acción, que es ejecutada en el caso de que la condición evalúe a verdadero.
+
+Lo último dentro de la revisión literaria fue el relevamiento de los motores de reglas. Se consideraron algunos de los motores de reglas más conocidos en el ámbito de desarrollo de Java, que veremos en las siguientes slides. El relevamiento se centro en los puntos del criterio de evaluación:
+- Gestión de las reglas: ¿Brinda el proyecto herramientas o mecanismos para tareas de la gestión de las reglas, como la creación, modificación, eliminación, evaluación y versionado?
+
+Estas capacidades son necesarias para cumplir con los objetivos de este trabajo, teniendo que ser implementadas en caso de no ser ofrecidas por la herramienta en cuestión.
+
+- Integración: ¿Cómo puede ser el motor integrado con el sistema actual? ¿Cómo se realiza el intercambio de información entre el motor de reglas y el sistema? ¿Cuenta el motor con documentación relevante y actualizada?
+
+Restricciones en los formatos de intercambio de información entre el SI y el motor de reglas imponen también restricciones a la hora de realizar la integración.
+
+Documentación insuficiente o desactualizada resulta en un mayor tiempo requerido y propensidad a errores, siendo lo contrario cierto para documentación completa y actualizada.
+
+- Mantenimiento:
+¿Cuenta el proyecto con mantenedores activos? ¿Existen bugs o incompatibilidades que puedan afectar a este trabajo?
+
+- Expresividad: ¿Con qué lenguaje o lenguajes permite el motor la expresión de las reglas? El o los lenguajes deben tener la expresividad suficiente para los cálculos referentes a las cuotas de la obra social.
+
+En concordancia con los objetivos planteados, se prefieren lenguajes que sean inteligibles para personal sin conocimientos específicos de programación.
+
+Para facilitar la comparación entre las distintas opciones, se implementó la lógica de un cálculo de ejemplo utilizando los distintos motores.
+\end{comment}
+
+\begin{frame}{Rulebook}
+    \begin{description}
+        \item [Expresividad:] Formato Given-When-Then (Dado-Cuando-Entonces)
+            \begin{itemize}
+                \item funciones lambda
+                \item anotaciones en clases y métodos
+            \end{itemize}
+        \item [Gestión de las reglas:] acoplada a la gestión del código
+        \item [Integración:] uso directo de objetos Java
+        \item [Mantenimiento:] última modificación hace más de 4 años
+    \end{description}
+\end{frame}
+\begin{comment}
+Rulebook expresa las reglas utilizando un formato Given-When-Then (Dado-Cuando-Entonces).Las reglas pueden crearse utilizando objetos builder, los cuales reciben funciones lambda, o madiante el usod de anotaciones en clases de Java y sus métodos.
+
+Dado que las reglas se expresan en código Java, la gestión de las mismas está acoplada a la gestión del código. Por la misma razón, las reglas pueden hacer uso directo de los objetos de negocio.
+
+En cuanto al mantenimiento, la última modificación al repositorio correspondiente al motor fue realizada hace más de 4 años.
+\end{comment}
+
+\begin{frame}{Easy Rules}
+    \begin{description}
+        \item [Expresividad:]
+            \begin{itemize}
+                \item anotaciones en clases y métodos
+                \item lenguajes de expresión: MVEL, SpEL y JEXL
+            \end{itemize}
+        \item [Gestión de las reglas:]
+            \begin{itemize}
+                \item Con anotaciones, acoplada al código
+                \item Con lenguajes de expresión, pueden extraerse a archivos .yml
+            \end{itemize}
+        \item [Integración:] uso directo de objetos Java
+        \item [Mantenimiento:] desde 2020 en modo de mantenimiento
+    \end{description}
+\end{frame}
+\begin{comment}
+Easy rules se adhiere a la definición de regla dada antes, contando con una condición y una acción. Nos permite expresar las reglas mediantes clases y métodos anotados, o haciendo uso de lenguajes de expresión, en particular MVEL, SpEL y JEXL. Estos son lenguajes similares a Java, pero con tipado dinámico.
+
+En caso de utilizar anotaciones, la gestión está acoplada a la gestión del código. En caso de utilizar los lenguajes de expresión, las reglas pueden escribirse en archivos .yml, con lo que su gestión puede ser separada de la gestión del código, lo que evita la necesidad de recompilar el sistema.
+
+Al igual que el caso anterior, se puede hacer uso directo de objetos Java.
+
+Desde 2020 el proyecto se encuentra en modo de mantenimiento, soportando únicamente la última versión lanzada, y realizando solo cambios para la corrección de errores.
+\end{comment}
+
+\begin{frame}{Jess}
+    \begin{description}
+        \item [Expresividad:] utiliza el lenguaje Jess o JessML
+        \item [Gestión de las reglas:] no brinda herramientas especificas
+        \item [Integración:] uso directo de objetos Java
+        \item [Mantenimiento:] última versión publicada en 2006
+    \end{description}
+\end{frame}
+\begin{comment}
+JESS utiliza un formato similar a easy-rules, con la diferencia de que utiliza el leaguaje JESS, que es similar a Lisp.
+
+Las reglas son almacenadas en archivos separados del código, con lo cual se pueden gestionar de forma separada, no necesitando la recompilación del código fuente. Dicho esto, Jess no brinda ninguna herramienta especifica para realizar dicha gestión.
+
+Al igual que en los casos anteriores, este motor de reglas puede hacer manipulación directa de los objetos Java.
+
+La última versión de Jess fue publicada en marzo de 2006.
+\end{comment}
+
+\begin{frame}{Drools}
+    \begin{description}
+        \item [Expresividad:] 
+            \begin{itemize}
+                \item lenguaje DRL
+                \item DMN, DRD y expresiones FEEL
+            \end{itemize}
+        \item [Gestión de las reglas:]
+            editor DMN
+        \item [Integración:] uso directo de objetos Java (POJO)
+        \item [Mantenimiento:] última modificación hace más de 4 años
+    \end{description}
+\end{frame}
+\begin{comment}
+Las reglas en Drools se pueden escribir utilizando DRL el lenguaje de reglas de Drools, o DMN la notación de diagramas de decisión, la cual utiliza DRD, que son diagramas de requerimientos de decisión. Estos diagramas estos compuestos por entradas y decisiones, estas últimas, a su vez, están formadas por expresiones que utilizan el lenguaje FEEL o lenguaje de expresión sufientemente amigable.
+
+En este trabajo se favora la opción de utilizar DMN, ya que se espera que la representación visual de reglas permita su compresión por parte del personal de la obra social. Esta herramienta se encuentra disponible como una librería web autocontenida, o una extensión del visual studio code.
+
+Más allá del lenguaje que se utilice para la expresión de las reglas, realizar cambios en las mismas no requiere la recompilación del código de la aplicación.
+
+Para la gestión de las reglas, Drools cuenta con DMN editor, herramienta con la cual se puede crear, modificar y eliminar reglas.
+
+Las reglas pueden hacer uso de objetos POJO, es decir objetos únicamente con getters y setters.
+
+Drools continúa en desarrollo, siendo la publicación de la última versión estable el año pasado y la última modificación del repositorio la semana pasada.
+\end{comment}
+
+\begin{frame}{OpenL Tablets}
+    \begin{description}
+        \item [Expresividad:]
+            \begin{itemize}
+                \item funciones lambda
+                \item anotaciones en clases y métodos
+            \end{itemize}
+        \item [Gestión de las reglas:] acoplada a la gestión del código
+        \item [Integración:] uso directo de objetos Java
+        \item [Mantenimiento:] última modificación hace más de 4 años
+    \end{description}
+\end{frame}
+\begin{comment}
+
+\end{comment}
 
 % TODO: refactorizacion
 
