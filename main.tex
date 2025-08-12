@@ -6,6 +6,12 @@
 \usepackage[backend=biber, style=alphabetic, sorting=none, bibstyle=alphabetic, maxnames=10, minnames=6,backref=true, autocite=inline, labelalpha=true, doi=false, url=false]{biblatex}
 \addbibresource{the.bib}
 
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning}
+
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
 \title[Parametrizando un Sistema Informático para Obra Social Universitaria]
 {Parametrizando un Sistema Informático para Obra Social Universitaria con un Motor de Reglas}
 \author{Iván Brocas}
@@ -94,6 +100,7 @@ Por otra parte, la última opción, en principio parece ser más onerosa y rápi
         \end{enumerate}
     \end{block}
 \end{frame}
+% TODO: agregar métrica
 \begin{comment}
 El principal objetivo es facilitar la adaptación del sistema frente a cambios en su contexto. En particular, se focaliza en el cálculo de cuotas de los afiliados. Se eligió esta parte de las reglas de negocio en concreto por su complejidad y propensidad a cambios.
 Una forma de lograr esto es mediante la separación de las reglas de negocio del código fuente. Para esto, se suele hacer uso de un motor de reglas, que permite la ejecución de reglas externas al código de la aplicación. Este motor suele formar parte de un sistema de gestión de reglas de negocio, que además del motor incluye herramientas para la gestión de las reglas.
@@ -463,14 +470,234 @@ Las reglas pueden hacer uso directo de objetos, clases y paquetes de Java.
 OpenL Tablets continúa activamente en desarrollo, su última versión lanzada en 2025 y al igual que Drools la última actualización de la rama principal del repositorio tiene menos de una semana.
 \end{comment}
 
-% TODO: refactorizacion
+\section{Implementación}
 
-% TODO: integracion con openl
+\subsection{Refactorización}
 
-% TODO: ejemplo regla
+\begin{frame}{Implementación}
+    \begin{block}{Refactorización}
+        \begin{itemize}
+            \item Extracción del cálculo de cuotas
+            \item Manejo de errores con patrones de programación funcional
+            \item Mejora de legibilidad del código
+        \end{itemize}
+    \end{block}
+\end{frame}
+\begin{comment}
+Antes de realizar la selección del motor de reglas a utilizar y su integración con el sistema informático de DOSPU, se realizó una refactorización del código existente.
 
-% TODO: ejemplo cambio
+Primeramente, se extrajo el código correspondiente al cálculo de las cuotas en forma de una implementación de una interfaz en Java. Esto se hizo para que la versión refactorizada de este código, y después la versión que integra el motor de reglas sean también implementaciones de esta interfaz, haciendo más sencilla la comparación.
 
-% TODO: conclusiones
+El código extraído luego fue refactorizado, principalmente utilizando patrones de programación funcional para el manejo de errores. También se cambiaron algunos métodos para mejorar la legibilidad del código, para lo cual se utilizó un flujo de ejecución más directo.
+\end{comment}
+
+\subsection{Selección del motor de reglas}
+
+\begin{frame}{Selección del motor de reglas}
+    \begin{description}
+        \item [Rulebook:] falta de separación entre reglas y código
+        \item [Jess:] lenguaje de expresión, de código cerrado
+        \item [Easy Rules:] lenguaje de expresión
+        \item [Drool:] inconvenientes con editor DMN
+        \item [OpenL Tablets:] motor seleccionado
+    \end{description}
+\end{frame}
+\begin{comment}
+De las opciones exploradas hay algunas que presentan características contradictorias con los objetivos de este proyecto:
+- Rulebook: falta de separación entre reglas y código, lo que es directamente contradictorio con uno de los objetivos específicos propuestos.
+- Jess: utilizando misma línea de razonamiento utilizada antes para los sistemas ``enlatados'' resulta en la preferencia de las opciones restantes sobre Jess. Adicionalmente, si bien se mantiene expresivo, el lenguaje Jess puede resultar dificil de comprender incluso para personal informático, en el caso de que no estén familiarizados con el paradigma de programación funcional.
+- Easy Rules: el ejemplo utilizando este motor resultó inluso más extenso que la implementación utilizando código Java.
+
+Esto nos deja con los principales candidatos siendo Drools y OpenL Tablets. Estas dos opciones resultan comparables en los aspectos considerados. La principal diferencia fue la presencia de errores en la herramienta de gestión de las reglas para el caso de Drools, lo que resulta en la elección de OpenL tablets.
+\end{comment}
+
+\subsection{Integración de OpenL Tablets}
+
+\begin{frame}{Integración de OpenL Tablets}
+    \begin{block}{Rule Services}
+        Exposición de las reglas como servicios web
+
+        Ventajas:
+        \begin{itemize}
+            \item integración con distintas aplicaciones
+            \item múltiples fuentes de datos
+            \item exposición de varios proyectos en un único servicio
+        \end{itemize}
+    \end{block}
+    \begin{block}{OpenL Tablets Embebido}
+        Inclusión de OpenL Tablets como librería
+
+        Ventajas:
+        \begin{itemize}
+            \item simpleza en la comunicación
+            \item menor costo de comunicación
+        \end{itemize}
+    \end{block}
+\end{frame}
+\begin{comment}
+A la hora de integrar OpenL Tablets con un sistema informático, existen dos opciones    
+
+La primera consiste en exponer las reglas por medio de un servicio web. OpenL provee una aplicación (Rule Services) que permite realizar dicha exposición de forma sencilla partiendo de los archivos Excel que definen a las reglas.
+Las principales ventajas que permite esto son:
+- integración con distintas aplicaciones: facilita la integración con distintas aplicaciones sobre distintas plataformas.
+- múltiples fuentes de datos: (permite el uso de)
+- exposición de varios proyectos en un único servicio: (permite)
+
+La segunda consiste en embebir OpenL Tablets en el sistema, utilizando la librería correspondiente. Las clases de esta librería luego son utilizadas para la generación de clases Wrapper, que exponen las reglas expresadas en los documentos Excel como métodos de clases Java. Estas clases son generadas en tiempos de ejecución.
+Las principales ventajas de esta opción son la reducción en la complejidad de la complejidad y el costo de comunicación con el sistema, ya que dicha comunicación se realiza mediante la llamada a métodos java.
+
+Considerando que las reglas serán utilizadas únicamente por el sistema de DOSPU, y estarán agrupadas en un único proyecto, tornando los beneficios mencionados de poca utilidad, se decidió utilizar la segunda opción.
+\end{comment}
+
+\begin{frame}{Estructura de la Integración}
+    \begin{figure}
+    \centering
+    \begin{tikzpicture}[
+        auto,
+        inner sep=2mm,
+        box/.style={draw, rectangle, align=center},
+        alt-box/.style={draw, rectangle, align=center, rounded corners=12pt},
+        pre/.style={Stealth-},
+        post/.style={-Stealth},
+        alt-pre/.style={dashed, Stealth-},
+        alt-post/.style={dashed, -Stealth},
+    ]
+        \node[box] (system) {SI-DOSPU};
+        \node[box, right=of system] (service) {CalculoReglasServiceImpl}
+            edge[pre] (system);
+        \node[box, below=of service] (clases) {Clases Integración}
+            (clases.west) edge[post] (system);
+        \node[box, right=of service] (wrapper)  {Clase Wrapper}
+            edge[pre] (service)
+            edge[post] (clases.east);
+        \node[alt-box, above=of wrapper] (rules)  {Reglas (excel)}
+            edge[alt-post] node {\small Compilado a} (wrapper)
+            (rules.west) edge[alt-pre] node[swap] {\small Lee} (service);
+    \end{tikzpicture}
+\end{figure}
+\end{frame}
+\begin{comment}
+En el diagrama se puede ver la estructura resultante de la integración con el sistema. Los rectángulos sin bordes redondeados representan una o varias clases Java, siendo la comunicación entre las mismas por llamado de sus respectivos métodos.
+
+CalculoReglasServiceImpl es la implementación del servicio mencionado anteriormente.
+
+Las clases de integración son las clases utilizadas de forma directa desde las reglas. Estas clases abstraen algunos de los detalles de implementación del sistema, con el fin de reducir la complejidad de las reglas de negocios.
+\end{comment}
+
+\subsection{Ejemplo: cálculo de voluntario jubilado}
+
+\begin{frame}{Ejemplo: cálculo de voluntario jubilado}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{tables/jubilado.png}
+    \end{figure}
+    \begin{block}{Inferencia de parámetros}
+        \texttt{objeto.getCampo()} \rightarrow \texttt{campo}
+    \end{block}
+\end{frame}
+\begin{comment}
+En esta tabla comienza en cálculo de la cuota base, sin los aportes extra, para los voluntarios jubilados.
+
+De forma general, las primeras filas definen las condiciones y acciones o, como en este caso, el retorno de la regla. En particular se define las expresiones que se utilizan para esto y los parámetros que se utilizan dentro de las expresiones. (En la presentación doy un poco más de detalle señalando las celdas en particular)
+
+También podemos ver una de las características de OpenL Tablets, la inferencia de parámetros. Los nombres utilizados dentro de las expresiones pueden hacer referencia a los parámetros definidos para la expresión, los parámetros de la tabla o los campos de estos últimos, adicionalmente, la llamada a un método getter de un objeto de java es equivalente al acceso a un campo. Dado el uso de campos privados en los objetos, este uso no resulta ambiguo.
+\end{comment}
+
+\begin{frame}{Ejemplo: cálculo de voluntario jubilado}
+    \begin{block}{Dispersión de valores}
+        \texttt{Afiliacion} y \texttt{Valores} abstraen el acceso a múltiples clases
+    \end{block}
+    \begin{block}{Manejo de errores}
+        \begin{itemize}
+            \item tipo \texttt{Response<T>}
+            \item Errores
+                \begin{itemize}
+                    \item recuperables
+                    \item no recuperables
+                \end{itemize}
+        \end{itemize}
+    \end{block}
+\end{frame}
+\begin{comment}
+Las clases Afiliacion y Valores, en la tabla anterior, tienen dos propósitos.
+
+El primero es abstraer el acceso a múltiples clases internas para la obtención de información necesaria para el cálculo, como el haber jubilatorio del afiliado. Afiliacion brinda acceso a la información referida al afiliado y Valores a valores de referencia.
+
+
+Por otro lado, se utilizan para encapsular el manejo de errores. Dentro del sistema, muchos métodos con los que se obtiene información sobre los afiliados retornan el tipo Response<T> que puede ser un valor o un error. Dentro de estos errores, podemos diferenciar entre dos tipos.
+- recuperables: son aquellos que comunican información dentro de un estado válido del sistema. Por ejemplo consultar por el haber jubilatorio de un voluntario jubilado que no tiene uno registrado resultará en el retorno de una error. Como se mencinó anteriormente, este es una caso válido para esta subcategoría.
+- no recuperables: por otro lado, si una clase debería siempre tener un sueldo registrado, no tenerlo representa un error en la cargo de datos, con lo cual no puede ser recuperado
+
+En el primer caso, se proveen metodos como los vistos en la tabla anterior, tieneHaberPercibido, para consultar sobre la existencia o no de un valor.
+
+En el otro, se eleva una excepción con el error correspondiente, que luego la implementación del servicio se encarga de transformar nuevamente en un valor de tipo Response<T>
+
+En el otro, se eleva una excepción con el error correspondiente, que luego la implementación del servicio se encarga de transformar nuevamente en un valor de tipo Response<T>
+\end{comment}
+
+\begin{frame}{Ejemplo: cálculo de voluntario jubilado}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{tables/jubiladoSinHaber.png}
+    \end{figure}
+\end{frame}
+\begin{comment}
+En esta tabla se puede apreciar la utilidad de la clase de integración restante Numero. Esta clase actúa como wrapper de la clase BigDecimal, para poder realizar operaciones con los operadores aritméticos y de comparación comunes en lugar de tener que llamar a los métodos correspondiente.    
+
+También se puede utilizar para mantener el detalle del cálculo de la cuota, manteniendo registro de las operaciones llevadas a cabo sobre los valores en lugar de especificar el detalle de forma manual.
+\end{comment}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.75\textwidth]{tables/jubiladoSinConyuge.png}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{tables/jubiladoBase.png}
+    \end{figure}
+\end{frame} 
+\begin{comment}
+(Explicación breve con base en lo explicado en la parte de afiliaciones)
+\end{comment}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{tables/jubiladoConConyuge.png}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{tables/jubiladoConConyugeResponsable.png}
+    \end{figure}
+\end{frame}
+\begin{comment}
+(Explicación breve con base en lo explicado en la parte de afiliaciones)
+\end{comment}
+
+% TODO:
+\begin{frame}{Ejemplo de un cambio}
+    
+\end{frame}
+\begin{comment}
+\end{comment}
+
+\section{Resultados}
+
+% TODO: 
+\begin{frame}{Resultados}
+    
+\end{frame}
+\begin{comment}
+\end{comment}
+
+\section{Conclusiones}
+
+% TODO: 
+\begin{frame}{Conclusiones}
+    
+\end{frame}
+\begin{comment}
+\end{comment}
 
 \end{document}
