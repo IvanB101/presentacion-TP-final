@@ -675,29 +675,134 @@ También se puede utilizar para mantener el detalle del cálculo de la cuota, ma
 (Explicación breve con base en lo explicado en la parte de afiliaciones)
 \end{comment}
 
+\subsection{Ejemplo de un cambio}
+
 % TODO:
 \begin{frame}{Ejemplo de un cambio}
-    
+    \emph{
+    Para el cálculo de la cuota de un afiliado con categoría voluntario adherente y subcategoría agente UNSL con licencia, el monto de la cuota es equivalente al monto de los aportes y contribuciones 9\% del sueldo bruto en actividad. Además, dicho monto no puede ser inferior a los porcentajes de la CMMU que se utilizan en el cálculo anteriormente presentado para la categoría y subcategoría.
+    }
+    \begin{block}{Sistema actual}
+        \begin{itemize}
+            \item Cambio del código (30+ lineas)
+            \item Volver a compilar el sistema
+            \item Volver a desplegar el sistema
+        \end{itemize}
+    \end{block}
 \end{frame}
 \begin{comment}
+Para ver el impacto de la integración de OpenL Tablets sobre la adaptabilidad del sistema, veamos lo que conlleva realizar un cambio en las reglas de cálculo.
+En particular, se considera el siguiente cambio.
+
+En el sistema este cambio implica el cambio o adición de más de 30 líneas de código, además de que requiere volver a compilar el sistema y desplegar la nueva versión para hacer los cambios efectivos.
+\end{comment}
+
+\begin{frame}{Ejemplo de un cambio}
+    \begin{block}{Tabla original}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.93\textwidth]{tables/voluntario.png}
+        \end{figure}
+    \end{block}
+\end{frame}
+\begin{comment}
+En la slide se puede ver la tabla original que se debe cambiar, la cual especifica la regla correspondiente con el caso general para los voluntarios adherente mencionado anteriormente.
+\end{comment}
+
+\begin{frame}{Ejemplo de un cambio}
+    \begin{block}{Cambios aplicados}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.93\textwidth]{tables/voluntario_cambios.png}
+        \end{figure}
+    \end{block}
+\end{frame}
+\begin{comment}
+Por otro lado, utilizando el motor de reglas, lograr el mismo cambio requiere únicamente la adición de la última fila en la segunda tabla. Una vez guardado el archivo, el sistema detecta los cambios y vuelve a generar las clases wrapper, haciendo los cambios efectivos.
 \end{comment}
 
 \section{Resultados}
 
 % TODO: 
 \begin{frame}{Resultados}
-    
+    \begin{itemize}
+        \item Se consiguió la separación de las reglas de negocios del código fuente
+        \item Realizar cambios en las reglas no requiere
+            \begin{itemize}
+                \item volver a compilar el sistema
+                \item volver a desplegar el sistema
+            \end{itemize}
+    \end{itemize}
+    \begin{block}{Comparación de líneas de código entre versiones}
+        \begin{table}
+            \centering
+            \begin{tabular}{|c|c|c|}
+                \hline
+                & google-java-format & formateador JDT LS \\ \hline
+                Versión original & 573 & 556 \\ \hline
+                Versión funcional & 512 & 444 \\ \hline
+                Motor de reglas & \multicolumn{2}{c|}{143} \\ \hline
+            \end{tabular}
+        \end{table}
+    \end{block}
 \end{frame}
 \begin{comment}
+En base a los ejemplos se puede ver que
+- Se consiguió la separación de las reglas de negocios del código fuente
+- Realizar cambios en las reglas no requiere volver a compilar ni desplegar el sistema
+
+Por otra parte, comparando las distintas versiones utilizando como métrica la cantidad de líneas de código obtenemos los resultados de la tabla. Para reducir el sesgo introducido por los formateadores en el caso del código fuente, se utilizaron dos formateadores: uno que sigue la guía de estilo de google y el formateador del language server utilizado por el IDE Eclipse.
 \end{comment}
 
 \section{Conclusiones}
 
 % TODO: 
 \begin{frame}{Conclusiones}
-    
+    \begin{block}{Objetivos Específicos}
+        \begin{enumerate}
+            \item Extraer las reglas de negocio actualmente en uso
+            \item Expresar dichas reglas en un lenguaje que resulte entendible para el personal de la obra social.
+            \item Permitir la gestión de las especificaciones obtenidas de forma independiente al sistema.
+            \item Reducir el esfuerzo requerido para materializar cambios en las reglas del negocio
+            \begin{enumerate}
+                \item modificar el código fuente del sistema, ni
+                \item realizar el despliegue de una nueva versión.
+            \end{enumerate}
+            \item Reformular el código fuente para que sea más legible.
+        \end{enumerate}
+    \end{block}
 \end{frame}
 \begin{comment}
+Revisitando los objetivos planteados al inicio de la presentación y teniendo en cuenta los resultados presentados podemos ver que el esfuerzo necesario para afrontar cambios ya no implica los ítem especificados.
+
+Las reglas fueron brevemente explicadas en la revisión literaria, así como consideraciones adicionales extraídas del código fuente correspondiente.
+
+Con base en la reducción de líneas de código, se supone una mejora en la legibilidad de las reglas de negocio y, en particular, una mejora de la legibilidad del código fuente
+\end{comment}
+
+\begin{frame}{Limitaciones}
+    \begin{itemize}
+        \item Expresar dichas reglas en un lenguaje que resulte entendible para el personal de la obra social.
+        \item Gestión de las reglas
+    \end{itemize}
+\end{frame}
+\begin{comment}
+Si bien se espera que la reducción en las líneas de código junto con la abstracción de algunos aspectos del funcionamiento interno del sistema resulté en una mejor comprensión por parte del personal de la obra social, esto queda por ser realmente puesto a prueba.
+
+A pesar de que las reglas fueron separadas del código fuente del sistema, quedó por configurar OpenL Studio, sin el cual la gestión resulta un proceso no trivial. OpenL Studio cuenta con herramientas para facilitar la gestión de las reglas, dentro de las cuales se encuentra la validación de las tablas integrada con el editor, herramienta de la cual carecen otros editores de hojas de cálculo.
+\end{comment}
+
+\begin{frame}{Trabajos Futuros}
+    \begin{itemize}
+        \item Mejora en la gestión de reglas
+        \item Comprobación de la compresión de las reglas
+        \item Parámetrización de otros aspectos del SI
+    \end{itemize}
+\end{frame}
+\begin{comment}
+En base a las limitaciones, posibles continuaciones de este trabajo podrían ser la inclusión de OpenL Studio para facilitar la gestión de las reglas, así como la comprobación de la facilidad del personal de la obra social para comprender las reglas. Por ejemplo mediante un experimento o una estimación más involucrada de dicho esfuerzo.
+
+Adicionalemnte, la continuación más natural, es la parametrización de otros aspectos del sistema, como por ejemplo el cálculo de las coberturas de las prácticas
 \end{comment}
 
 \end{document}
