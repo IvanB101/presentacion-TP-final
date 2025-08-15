@@ -4,6 +4,8 @@
 
 \usepackage{comment}
 
+\usepackage{multirow}
+
 \usepackage[backend=biber, style=alphabetic, sorting=none, bibstyle=alphabetic, maxnames=10, minnames=6,backref=true, autocite=inline, labelalpha=true, doi=false, url=false]{biblatex}
 \addbibresource{the.bib}
 
@@ -38,23 +40,32 @@
 \end{frame}
 \begin{comment}
 (Presentación mía y del trabajo)
+Trabajo integrador final
 \end{comment}
 
 \section{Introducción}
 
+% TODO: tecnologias
 \begin{frame}{Introducción}{Marco de trabajo}
     Un sistema informático para obras sociales universitarias, caracterizado por:
     \begin{itemize}
-        \item Ágilidad
+        \item Agilidad
         \item Centricidad en el afiliado
     \end{itemize}
-    % TODO: Tecnologías
+    Tecnologías en el backend:
+    \begin{itemize}
+        \item Java
+        \item Spring
+        \item PostgreSQL
+    \end{itemize}
 \end{frame}
 \begin{comment}
 Este projecto se encuentra enmarcado en el desarrollo de un sistema informático para obras sociales universitarias, caracterizado por:
 - Ágilidad
 - Centricidad en el afiliado
 El foco se encuentra en la segunda, procurando facilitar la adaptación del sistema en respuesta a cambios a un costo accesible y en tiempos mínimos a partir de la introducción de un motor de reglas que permita separar el código fuente de reglas del negocio tendientes a cambiar.
+
+Además, nos centramos en el backend del sistema, que utiliza, entre otras, las siguientes tecnologías (slides).
 \end{comment}
 
 \subsection{Motivación}
@@ -100,8 +111,7 @@ Por otra parte, la última opción, en principio parece ser más onerosa y rápi
 \subsection{Objetivos}
 
 \begin{frame}{Objetivo General}
-        Facilitar la adaptación del sistema frente a cambios en la reglamentación del cálculo de cuotas.
-        
+    Facilitar la adaptación del sistema frente a cambios en la reglamentación del cálculo de cuotas.
 \end{frame}
 \begin{comment}
 El principal objetivo es facilitar la adaptación del sistema frente a cambios en su contexto. En particular, se focaliza en el cálculo de cuotas de los afiliados. Se eligió esta parte de las reglas de negocio en concreto por su complejidad y propensidad a cambios.
@@ -110,10 +120,10 @@ Una forma de lograr esto es mediante la separación de las reglas de negocio del
 
 \begin{frame}{Objetivos específicos}
     \begin{enumerate}
-        \item Extraer las reglas de negocio actualmente en uso
+        \item Extraer las reglas de negocio actualmente en uso.
         \item Expresar dichas reglas en un lenguaje que resulte entendible para el personal de la obra social.
         \item Permitir la gestión de las especificaciones obtenidas de forma independiente al sistema.
-        \item Reducir el esfuerzo requerido para materializar cambios en las reglas del negocio
+        \item Reducir el esfuerzo requerido para materializar cambios en las reglas del negocio, no requiriendo:
         \begin{enumerate}
             \item modificar el código fuente del sistema, ni
             \item realizar el despliegue de una nueva versión.
@@ -167,7 +177,6 @@ También se detectó que en sistemas informáticos para organismos de salud priv
         \item Familiar
         \item Voluntario adherente
     \end{itemize}
-    % TODO: agregar referencias
 \end{frame}
 \begin{comment}
 De las ordenanzas que dictan las normativas de DOSPU, podemos ver que los afiliados estan divididos en tres subcategorías:
@@ -222,16 +231,16 @@ Como se mencionó antes, los afiliados de esta categoría son familiares de afil
 \begin{frame}{Voluntario adherente}
     Subcategorías:
     \begin{itemize}
-        \item pensionado
-        \item becarios y personal ad honorem de la UNSL
-        \item agente UNSL con licencia
-        \item ascendientes en primer grado del afiliado titular
-        \item hijos (que hayan dejado de reunir las condiciones de no aportantes)
-        \item familiares adherentes
-        \item universitarios adherentes
-        \item ex-afiliados a DOSPU
-        \item agentes vinculados a DOSPU
-        \item adherente de edad avanzada
+        \item Pensionado
+        \item Becarios y personal ad honorem de la UNSL
+        \item Agente UNSL con licencia
+        \item Ascendientes en primer grado del afiliado titular
+        \item Hijos (que hayan dejado de reunir las condiciones de no aportantes)
+        \item Familiares adherentes
+        \item Universitarios adherentes
+        \item Ex-afiliados a DOSPU
+        \item Agentes vinculados a DOSPU
+        \item Adherente de edad avanzada
     \end{itemize}
 \end{frame}
 \begin{comment}
@@ -251,7 +260,7 @@ Dentro de esta se esta categoría, se encuentran las siguientes subcategorías:
 
 \begin{frame}{Voluntario adherente}
     \begin{block}{Caso general}
-        Porcentaje sobre la Cuota Mensual Máxima Única (CMMU), dependiente de la edad.
+        Porcentaje sobre la Cuota Mensual Máxima Única (CMMU), dependiente de la edad y subcategoría.
 
         CMMU: 6 \% del sueldo total bruto de un Profesor Universitario Titular Exclusivo con Máxima Antigüedad
     \end{block}
@@ -280,10 +289,10 @@ El cálculo para un pensionado sigue casi las mismas consideraciones que el cál
     \begin{block}{Agente UNSL con licencia}
         Monto de la cuota: máximo entre el 9\% del sueldo bruto en actividad y el porcentaje correspondiente de la CMMU.
     \end{block}
-    \begin{block}{Ascendiente en primer grado (de una afiliado titular)}
+    \begin{block}{Ascendiente en primer grado (de un afiliado titular)}
         Dependiendo de la antigüedad en DOSPU se utiliza CMMU o CMMU20
 
-        CMMU20: 6\% del sueldo de un Profesor Universitario Titular Exclusivo con una antigüedad correspondiente veinte años
+        CMMU20: 6\% del sueldo de un Profesor Universitario Titular Exclusivo con una antigüedad correspondiente a veinte años
     \end{block}
     \begin{block}{Adherentes de edad avanzada (mayores de 65)}
         Dependen de si cuentan con 25 años de aporte en DECOM.
@@ -348,8 +357,15 @@ Por otra parte, para los voluntarios jubilados, en el caso de que estos ingresen
             \item Expresividad
         \end{itemize}    
     \end{block}
+    \begin{block}{Motores relevados}
+        Rulebook, Easy Rules, Jess, Drools y OpenL Tablets.
+    \end{block}
+    \begin{block}{Repositorio con ejemplos}
+        https://github.com/IvanB101/ejemplos-motores-reglas
+    \end{block}
 \end{frame}
 \begin{comment}
+
 La idea subyacente de los motores de reglas es la externalización de la lógica de negocios. Este puede ser visto como un intérprete sofisticado de sentencias if-then (si-entonces). Estas sentencias, llamadas reglas están compuestas por: una condición, que evalúa a verdadero o falso, y una acción, que es ejecutada en el caso de que la condición evalúe a verdadero.
 
 Lo último dentro de la revisión literaria fue el relevamiento de los motores de reglas. Se consideraron algunos de los motores de reglas más conocidos en el ámbito de desarrollo de Java, que veremos en las siguientes slides. El relevamiento se centro en los puntos del criterio de evaluación:
@@ -371,120 +387,8 @@ Documentación insuficiente o desactualizada resulta en un mayor tiempo requerid
 En concordancia con los objetivos planteados, se prefieren lenguajes que sean inteligibles para personal sin conocimientos específicos de programación.
 
 Para facilitar la comparación entre las distintas opciones, se implementó la lógica de un cálculo de ejemplo utilizando los distintos motores.
-\end{comment}
 
-\begin{frame}{Rulebook}
-    \begin{description}
-        \item [Expresividad:] Formato Given-When-Then (Dado-Cuando-Entonces)
-            \begin{itemize}
-                \item funciones lambda
-                \item anotaciones en clases y métodos
-            \end{itemize}
-        \item [Gestión de las reglas:] acoplada a la gestión del código
-        \item [Integración:] uso directo de objetos Java
-        \item [Mantenimiento:] última modificación hace más de 4 años
-    \end{description}
-\end{frame}
-\begin{comment}
-Rulebook expresa las reglas utilizando un formato Given-When-Then (Dado-Cuando-Entonces).Las reglas pueden crearse utilizando objetos builder, los cuales reciben funciones lambda, o madiante el usod de anotaciones en clases de Java y sus métodos.
-
-Dado que las reglas se expresan en código Java, la gestión de las mismas está acoplada a la gestión del código. Por la misma razón, las reglas pueden hacer uso directo de los objetos de negocio.
-
-En cuanto al mantenimiento, la última modificación al repositorio correspondiente al motor fue realizada hace más de 4 años.
-\end{comment}
-
-\begin{frame}{Easy Rules}
-    \begin{description}
-        \item [Expresividad:]
-            \begin{itemize}
-                \item anotaciones en clases y métodos
-                \item lenguajes de expresión: MVEL, SpEL y JEXL
-            \end{itemize}
-        \item [Gestión de las reglas:]
-            \begin{itemize}
-                \item Con anotaciones, acoplada al código
-                \item Con lenguajes de expresión, pueden extraerse a archivos .yml
-            \end{itemize}
-        \item [Integración:] uso directo de objetos Java
-        \item [Mantenimiento:] desde 2020 en modo de mantenimiento
-    \end{description}
-\end{frame}
-\begin{comment}
-Easy rules se adhiere a la definición de regla dada antes, contando con una condición y una acción. Nos permite expresar las reglas mediantes clases y métodos anotados, o haciendo uso de lenguajes de expresión, en particular MVEL, SpEL y JEXL. Estos son lenguajes similares a Java, pero con tipado dinámico.
-
-En caso de utilizar anotaciones, la gestión está acoplada a la gestión del código. En caso de utilizar los lenguajes de expresión, las reglas pueden escribirse en archivos .yml, con lo que su gestión puede ser separada de la gestión del código, lo que evita la necesidad de recompilar el sistema.
-
-Al igual que el caso anterior, se puede hacer uso directo de objetos Java.
-
-Desde 2020 el proyecto se encuentra en modo de mantenimiento, soportando únicamente la última versión lanzada, y realizando solo cambios para la corrección de errores.
-\end{comment}
-
-\begin{frame}{Jess}
-    \begin{description}
-        \item [Expresividad:] utiliza el lenguaje Jess o JessML
-        \item [Gestión de las reglas:] no brinda herramientas especificas
-        \item [Integración:] uso directo de objetos Java
-        \item [Mantenimiento:] última versión publicada en 2006
-    \end{description}
-\end{frame}
-\begin{comment}
-JESS utiliza un formato similar a easy-rules, con la diferencia de que utiliza el leaguaje JESS, que es similar a Lisp.
-
-Las reglas son almacenadas en archivos separados del código, con lo cual se pueden gestionar de forma separada, no necesitando la recompilación del código fuente. Dicho esto, Jess no brinda ninguna herramienta especifica para realizar dicha gestión.
-
-Al igual que en los casos anteriores, este motor de reglas puede hacer manipulación directa de los objetos Java.
-
-La última versión de Jess fue publicada en marzo de 2006.
-\end{comment}
-
-\begin{frame}{Drools}
-    \begin{description}
-        \item [Expresividad:] 
-            \begin{itemize}
-                \item lenguaje DRL
-                \item DMN, DRD y expresiones FEEL
-            \end{itemize}
-        \item [Gestión de las reglas:]
-            editor DMN
-        \item [Integración:] uso directo de objetos Java (POJO)
-        \item [Mantenimiento:]
-            \begin{itemize}
-                \item última versión estable 2024
-                \item prblemas con editor DMN
-            \end{itemize}
-    \end{description}
-\end{frame}
-\begin{comment}
-Las reglas en Drools se pueden escribir utilizando DRL el lenguaje de reglas de Drools, o DMN la notación de diagramas de decisión, la cual utiliza DRD, que son diagramas de requerimientos de decisión. Estos diagramas estos compuestos por entradas y decisiones, estas últimas, a su vez, están formadas por expresiones que utilizan el lenguaje FEEL o lenguaje de expresión sufientemente amigable.
-
-En este trabajo se favora la opción de utilizar DMN, ya que se espera que la representación visual de reglas permita su compresión por parte del personal de la obra social. Esta herramienta se encuentra disponible como una librería web autocontenida, o una extensión del visual studio code.
-
-Más allá del lenguaje que se utilice para la expresión de las reglas, realizar cambios en las mismas no requiere la recompilación del código de la aplicación.
-
-Para la gestión de las reglas, Drools cuenta con DMN editor, herramienta con la cual se puede crear, modificar y eliminar reglas.
-
-Las reglas pueden hacer uso de objetos POJO, es decir objetos únicamente con getters y setters.
-
-Drools continúa en desarrollo, siendo la publicación de la última versión estable el año pasado y la última modificación del repositorio la semana pasada.
-
-Este fue la única de las opciones con la cual se encontraron problemas durante la implementación del ejemplo. Estos problemas fueron en torno al uso del editor DMN, donde algunas de las funcionalidades no se comportaban de forma correcta. Los casos más notables era para la importanción de definciones de tipos desde clases java y la definición de tipos dentro de las tablas de decisión. \end{comment}
-
-\begin{frame}{OpenL Tablets}
-    \begin{description}
-        \item [Expresividad:] tablas basadas en Excel, con BEXL
-        \item [Gestión de las reglas:] OpenL Studio
-        \item [Integración:] uso directo de objetos Java
-        \item [Mantenimiento:] última versión estable 2025
-    \end{description}
-\end{frame}
-\begin{comment}
-Con OpenL Tablets, la especificación de las reglas se hace haciendo uso de tablas basadas en excel. Las expresiones en estas tablas utilizan BEXL, que es una extensión de Java.
-
-La gestión de las reglas puede ser realizada con OpenL Studio, que es una aplicación web que permite realizar la gestión, versionado y control de acceso a las reglas. Las mismas se almacenan en docuemnto Excel, y sus cambios pueden hacerse efectivos sin necesidad de volver a compilar o desplegar el sistema.
-
-Las reglas pueden hacer uso directo de objetos, clases y paquetes de Java.
-
-OpenL Tablets continúa activamente en desarrollo, su última versión lanzada en 2025 y al igual que Drools la última actualización de la rama principal del repositorio tiene menos de una semana.
+Los motores considerados fueton: Rulebook, Easy Rules, Jess, Drools y OpenL Tablets.
 \end{comment}
 
 \section{Implementación}
@@ -510,22 +414,42 @@ El código extraído luego fue refactorizado, principalmente utilizando patrones
 
 \subsection{Selección del motor de reglas}
 
-\begin{frame}{Selección del motor de reglas}
+\begin{frame}{Selección del motor de reglas}{Motores inviables}
     \begin{description}
         \item [Rulebook:] falta de separación entre reglas y código
         \item [Jess:] lenguaje de expresión, de código cerrado
         \item [Easy Rules:] lenguaje de expresión
-        \item [Drool:] inconvenientes con editor DMN
-        \item [OpenL Tablets:] motor seleccionado
     \end{description}
 \end{frame}
 \begin{comment}
-De las opciones exploradas hay algunas que presentan características contradictorias con los objetivos de este proyecto:
+De las opciones exploradas hay algunas que fueron descartadas, dado que presentan características contradictorias con los objetivos de este proyecto:
 - Rulebook: falta de separación entre reglas y código, lo que es directamente contradictorio con uno de los objetivos específicos propuestos.
 - Jess: utilizando misma línea de razonamiento utilizada antes para los sistemas ``enlatados'' resulta en la preferencia de las opciones restantes sobre Jess. Adicionalmente, si bien se mantiene expresivo, el lenguaje Jess puede resultar dificil de comprender incluso para personal informático, en el caso de que no estén familiarizados con el paradigma de programación funcional.
 - Easy Rules: el ejemplo utilizando este motor resultó inluso más extenso que la implementación utilizando código Java.
+\end{comment}
 
-Esto nos deja con los principales candidatos siendo Drools y OpenL Tablets. Estas dos opciones resultan comparables en los aspectos considerados. La principal diferencia fue la presencia de errores en la herramienta de gestión de las reglas para el caso de Drools, lo que resulta en la elección de OpenL tablets.
+\begin{frame}{Selección del motor de reglas}{Comparación Drools y OpenL Tablets}
+    \begin{table}
+        \centering
+        \def\arraystretch{1.5}
+        \begin{tabular}{|l|c|c|}
+            \hline & Drools & OpenL Tablets \\\hline
+            Expresividad & DMN, DRD y FEEL & Tablas Excel y BEXL \\\hline
+            \multirow{2}{*}{Gestión de las reglas} & \multicolumn{2}{c|}{Separadas de código fuente} \\\cline{2-3}
+             & Editor DMN & OpenL Studio \\\hline
+            \multirow{2}{*}{Integración } & \multicolumn{2}{c|}{Uso de objetos Java} \\\cline{2-3}
+             & Getter y setter & Sin restricciones \\\hline
+            \multirow{2}{*}{Mantenimiento} & \multicolumn{2}{c|}{Activamente mantenidos} \\\cline{2-3}
+             & Bugs en editor DMN & \\\hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+\begin{comment}
+Esto nos deja con los principales candidatos siendo Drools y OpenL Tablets. Estas dos opciones resultan comparables en los aspectos considerados.
+
+La principal diferencia fue la presencia de errores en la herramienta de gestión de las reglas para el caso de Drools, el editor DMN. Algunas de las funcionalidades no se comportaban de forma correcta. Los casos más notables era para la importación de definiciones de tipos desde clases java y la definición de tipos dentro de las tablas de decisión.
+
+A raíz de esto, se optó por OpenL tablets.
 \end{comment}
 
 \subsection{Integración de OpenL Tablets}
@@ -701,7 +625,7 @@ También se puede utilizar para mantener el detalle del cálculo de la cuota, ma
     }
     \begin{block}{Sistema actual}
         \begin{itemize}
-            \item Cambio del código (30+ lineas)
+            \item Cambio del código (30+ líneas)
             \item Volver a compilar el sistema
             \item Volver a desplegar el sistema
         \end{itemize}
@@ -740,10 +664,9 @@ Por otro lado, utilizando el motor de reglas, lograr el mismo cambio requiere ú
 
 \section{Resultados}
 
-% TODO: 
 \begin{frame}{Resultados}
     \begin{itemize}
-        \item Se consiguió la separación de las reglas de negocios del código fuente
+        \item Se consiguió la separación de las reglas de negocio del código fuente
         \item Realizar cambios en las reglas no requiere
             \begin{itemize}
                 \item volver a compilar el sistema
@@ -773,7 +696,6 @@ Por otra parte, comparando las distintas versiones utilizando como métrica la c
 
 \section{Conclusiones}
 
-% TODO: 
 \begin{frame}{Conclusiones}
     \begin{block}{Objetivos Específicos}
         \begin{enumerate}
@@ -812,8 +734,8 @@ A pesar de que las reglas fueron separadas del código fuente del sistema, qued�
 \begin{frame}{Trabajos Futuros}
     \begin{itemize}
         \item Mejora en la gestión de reglas
-        \item Comprobación de la compresión de las reglas
-        \item Parámetrización de otros aspectos del SI
+        \item Comprobación de la comprensión de las reglas
+        \item Parametrización de otros aspectos del SI
     \end{itemize}
 \end{frame}
 \begin{comment}
@@ -824,7 +746,7 @@ Adicionalemnte, la continuación más natural, es la parametrización de otros a
 
 \section{Agradecimientos}
 
-\begin{frame}{Agrademientos}
+\begin{frame}{Agradecimientos}
     \begin{itemize}
         \item A los profesores Mg. Alejandro Sánchez y Dr. Carlos Humberto Salgado
         \item Al jurado
